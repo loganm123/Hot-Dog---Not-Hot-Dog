@@ -22,7 +22,7 @@ st.write(
 
 file = st.file_uploader("Please upload an image file (jpg or png)", type=["jpg", "png"])
 
-import cv2 as cv
+import cv2
 
 import numpy as np
 
@@ -31,20 +31,17 @@ from keras.preprocessing.image import img_to_array
 
 
 def import_and_predict(image_data, model):
-    # size = (256,256)
-    # image_ingest = tf.image.decode_jpeg(image_data, channels = 3)
-    # image = ImageOps.fit(image_data, size, Image.ANTIALIAS)
-    # img = Image.open(image_data).resize(256,256)
-    # img = np.array(img)
-    # image = tf.image.resize(image_ingest,[256,256])
-    # prediction = model.predict(image, batch_size = 1)
-    #img = img_to_array(image_data)
-    #img = tf.keras.utils.load_img(image_data, target_size=(256, 256), color_mode="rgb")
-    #img = tf.image.resize(image_data, (256,256))
-    #img_tensor = tf.keras.utils.img_to_array(img)
-    #img_tensor = keras.utils.normalize(img_tensor, axis=1)
-    prediction = model.predict(tf.expand_dims(image_tensor, axis=0))
-    return prediction
+        size = (256,256)    
+        image = ImageOps.fit(image_data, size)
+        image = np.asarray(image)
+        #img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        img_resize = (cv2.resize(image, dsize=(256, 256)))
+        
+        img_reshape = img_resize[np.newaxis,...]
+    
+        prediction = model.predict(img_reshape)
+        
+        return prediction
 
 
 if file is None:
@@ -55,7 +52,6 @@ else:
     prediction = import_and_predict(image, model)
 
     if prediction[0][0] > prediction[0][1]:
-        st.write("It is a hotdog!")
+        st.write("It is a hotdog! Confidence rate is ", prediction[0][0]*100, "%")
     else:
-        st.write("It is not a hotdog!")
-    st.write(prediction)
+        st.write("It is not a hotdog! Confidence rate is ", prediction[0][1]*100, "%")
