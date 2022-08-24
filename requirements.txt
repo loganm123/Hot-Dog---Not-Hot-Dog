@@ -1,6 +1,6 @@
 tensorflow
 keras
 streamlit
-cv2
+opencv-python
 PIL
 numpy
