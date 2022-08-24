@@ -2,5 +2,5 @@ tensorflow
 keras
 streamlit
 opencv-python
-PIL
+Pillow
 numpy
